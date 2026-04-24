@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagementEF.Data;
 using StudentManagementEF.Models;
@@ -84,6 +85,29 @@ namespace StudentManagementEF.Controllers
             //We fetch the student to ensure it exists and to get a tracked entity that EF can mark as Deleted.
 
 
+        }
+
+        [HttpPost("course")]
+        public async Task<IActionResult> AddCourse(Course course)
+        {
+            await _context.Courses.AddAsync(course);
+            await _context.SaveChangesAsync();
+
+            return Ok(course);
+        }
+
+        [HttpGet("With-Courses")]
+        public async Task<IActionResult> GetStudentWithCourses()
+        {
+            var students = await _context.Students.Include(s => s.Courses).ToListAsync();
+
+            return Ok(students);
+        }
+        [HttpGet("courses")]
+        public async Task<IActionResult> GetCourses()
+        {
+            var courses = await _context.Courses.ToListAsync();
+            return Ok(courses);
         }
     }
 }

@@ -16,5 +16,7 @@ namespace StudentManagementEF.Models
         [Required]
         [MaxLength(100)]
         public string Email {  get; set; }=string.Empty;//means empty value sam as sttring b=""
+
+        public List<Course> Courses { get; set; }=new List<Course>();
     }
 }
